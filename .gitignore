@@ -1,0 +1,17 @@
+# Ignore everything by default
+*
+
+# Allow traversing directories
+!*/
+
+# Never traverse or include Bazel output symlinks/directories
+bazel-*
+**/bazel-*
+
+# Explicitly allow only the files we want tracked
+!.gitignore
+!BUILD
+!WORKSPACE
+!MODULE.bazel
+!run.sh
+!*.java
