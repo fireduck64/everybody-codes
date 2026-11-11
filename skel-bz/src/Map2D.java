@@ -247,7 +247,34 @@ public class Map2D<V>
   }
 
 
+	// Shifts down such that the lowest set x is on x=0
+  // and the lowest set y is on y=0.
+  // Only copies non-default values.
+  public Map2D<V> reduce()
+  {
+    long c_low_x=high_x;
+    long c_low_y=high_y;
 
+    for(Point p : getAllPoints())
+    { 
+      if (get(p) != default_value)
+      { 
+        c_low_x = Math.min (p.x, c_low_x);
+        c_low_y = Math.min (p.y, c_low_y);
+      }
+    }
+
+    Map2D<V> out = new Map2D<V>(default_value);
+    for(Point p : getAllPoints())
+    { 
+      if (get(p) != default_value)
+      { 
+        out.set( p.x - c_low_x, p.y - c_low_y, get(p));
+      }
+    }
+
+    return out;
+  }
 
   public Map2D<V> copyRange(long x1, long y1, long x2, long y2)
   {

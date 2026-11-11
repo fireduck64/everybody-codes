@@ -132,38 +132,6 @@ public class Prob
     return lst;
   }
 
-  public Map2D<Character> reduce(Map2D<Character> in)
-  {
-    long low_x=100000;
-    long low_y=100000;
-
-    Map<Character, Long> counts = in.getCounts();
-
-    if (!counts.containsKey('#')) return new Map2D<Character>('.');
-
-    for(Point p : in.getAllPoints())
-    {
-      if (in.get(p) == '#')
-      {
-        low_x = Math.min (p.x, low_x);
-        low_y = Math.min (p.y, low_y);
-      }
-    }
-
-    Map2D<Character> out = new Map2D<Character>('.');
-
-    for(Point p : in.getAllPoints())
-    {
-      if (in.get(p) == '#')
-      {
-        out.set( p.x - low_x, p.y - low_y, '#');
-      }
-    }
-
-    return out;
-    
-
-  }
 
   HashMap<String, Integer> memo=new HashMap<>();
 
@@ -174,7 +142,7 @@ public class Prob
     if (!counts.containsKey('#')) return 0;
     if (counts.get('#')==1) return 1;
 
-    box = reduce(box);
+    box = box.reduce();
 
     String key = box.getHashState();
     synchronized(memo)
@@ -338,7 +306,7 @@ public class Prob
 
   int lmagic(Map2D<Character> box)
   {
-    box = reduce(box);
+    box = box.reduce();
     Map<Character, Long> counts = box.getCounts();
 
     // Rotate around until the gap is top left
@@ -346,7 +314,7 @@ public class Prob
     for(int i=0; i<4; i++)
     {
       if (box.get(0,0) == '.') break;
-      box = reduce(box.rotateR());
+      box = box.rotateR().reduce();
     }
 
 
